@@ -1085,9 +1085,9 @@ int hostapd_ctrl_iface_init(struct hostapd_data *hapd)
 	}
 	os_free(fname);
 
-#ifdef ANDROID
+#ifdef USES_TI_MAC80211
 havesock:
-#endif /* ANDROID */
+#endif /* USES_TI_MAC80211 */
 
 	hapd->ctrl_sock = s;
 	eloop_register_read_sock(s, hostapd_ctrl_iface_receive, hapd,
