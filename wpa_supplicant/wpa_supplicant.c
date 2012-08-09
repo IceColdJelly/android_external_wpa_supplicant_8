@@ -2580,10 +2580,13 @@ next_driver:
 	}
 
 #ifdef CONFIG_P2P
-	if (wpas_p2p_init(wpa_s->global, wpa_s) < 0) {
-		wpa_msg(wpa_s, MSG_ERROR, "Failed to init P2P");
-		return -1;
-	}
+#ifdef USES_TI_MAC80211
+       if (os_strncmp(iface->ifname, "p2p0", 4) == 0)
+#endif /* USES_TI_MAC80211 */
+               if (wpas_p2p_init(wpa_s->global, wpa_s) < 0) {
+                       wpa_msg(wpa_s, MSG_ERROR, "Failed to init P2P");
+                       return -1;
+               }
 #endif /* CONFIG_P2P */
 
 	if (wpa_bss_init(wpa_s) < 0)
