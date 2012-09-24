@@ -1724,6 +1724,16 @@ static int wpa_supplicant_ctrl_iface_remove_network(
 		wpa_sm_set_config(wpa_s->wpa, NULL);
 		eapol_sm_notify_config(wpa_s->eapol, NULL, NULL);
 
+#ifdef ANDROID
+		/*
+		 * Android will send a notification with ssid,
+		 * but the ssid struct has already been freed.
+		 * Set it explicitly to NULL so there is no
+		 * segfault.
+		 */
+		wpa_s->current_ssid = NULL;
+#endif
+
 		wpa_supplicant_disassociate(wpa_s, WLAN_REASON_DEAUTH_LEAVING);
 	}
 
